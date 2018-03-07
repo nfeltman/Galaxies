@@ -14,8 +14,8 @@ import java.awt.*;
  */
 public class Launcher extends Application {
     // Size of the canvas for the Mandelbrot set
-    private static final int CANVAS_WIDTH = 750;
-    private static final int CANVAS_HEIGHT = 600;
+    private static final int CANVAS_WIDTH = 1500;
+    private static final int CANVAS_HEIGHT = 1200;
 
     @Override
     public void start(Stage theStage) {
