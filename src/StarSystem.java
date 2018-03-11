@@ -2,6 +2,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StarSystem {
 
     public static void drawSolarSystem(GraphicsContext gc, double t, double width, double height) {
@@ -9,67 +12,55 @@ public class StarSystem {
         Vector2d center = new Vector2d(width / 2, height / 2);
         gc.setTextAlign(TextAlignment.CENTER);
 
-
         // background image clears canvas
         gc.setFill(Color.BLACK);
         gc.fillRect(0,0, width, height);
 
-        // sun
-        gc.setFill(Color.YELLOW);
-        gc.fillOval( center.x-50, center.y-50, 100, 100);
+        SolarObject sun = constructSolarSystem();
+        sun.draw(gc, t, center);
+    }
+
+    public static SolarObject constructSolarSystem(){
+
+        List<SolarObject> planets = new ArrayList<>();
 
         // mercury
-        gc.setFill(Color.ORANGERED);
-        drawPlanet(1.4, 15, 120, 250, "Mercury", gc, t, center);
+        SolarObject mercury = new SolarObject(new ArrayList<>(),15, Color.ORANGERED, "Mercury", 0, 1.4, 250, 120);
+        planets.add(mercury);
 
         // venus
-        gc.setFill(Color.ORANGE);
-        drawPlanet(1.1, 20, 150, 500, "Venus", gc, t, center);
+        SolarObject venus = new SolarObject(new ArrayList<>(),20, Color.ORANGE, "Venus", 0, 1.1, 500, 150);
+        planets.add(venus);
 
         // earth
         int earthDistance = 200;
         int earthSize = 20;
-        gc.setFill(Color.BLUE);
-        drawPlanet(1, earthSize, earthDistance, 1000, "Earth", gc, t, center);
-        gc.setFill(Color.LIGHTGRAY);
-        drawMoon(13, 1, 5, earthSize, earthDistance,1000, gc, t, center);
-        gc.setFill(Color.WHITE);
-        drawMoonOrbiter(13, 1, 26, earthSize, earthDistance, 6, 1000, gc, t, center);
+
+        List<SolarObject> moonOrbiters = new ArrayList<>();
+        moonOrbiters.add(new SolarObject(new ArrayList<>(), 1, Color.WHITE, "", 0, 26, 1000, 5));
+        List<SolarObject> earthMoons = new ArrayList<>();
+        earthMoons.add(new SolarObject(moonOrbiters, 5, Color.LIGHTGRAY, "", 0, 13, 1000, earthSize));
+
+        SolarObject earth = new SolarObject(earthMoons, earthSize, Color.BLUE, "Earth", 0, 1, 1000, earthDistance);
+        planets.add(earth);
 
         // mars
-        gc.setFill(Color.DARKRED);
-        drawPlanet(0.95, 16, 300, 0, "Mars", gc, t, center);
-        gc.setFill(Color.GRAY);
-        drawMoon(20, 0.95, 1, 16, 300, 0, gc, t, center);
-        drawMoon(17, 0.95, 1, 14, 300, 0, gc, t, center);
+        List<SolarObject> marsMoons = new ArrayList<>();
+        marsMoons.add(new SolarObject(new ArrayList<>(), 1, Color.GRAY, "", 0, 16, 0, 16));
+        marsMoons.add(new SolarObject(new ArrayList<>(), 1, Color.GRAY, "", 0, 14, 0, 16));
+
+        SolarObject mars = new SolarObject(marsMoons, 16, Color.DARKRED, "Mars", 0, 0.95, 0, 300);
+        planets.add(mars);
 
         // saturn
-        gc.setFill(Color.LIGHTGOLDENRODYELLOW);
-        drawPlanet(0.95, 35, 550, 1500, "Saturn", gc, t, center);
-        gc.setFill(Color.BLACK);
-        drawPlanet(0.95, 33, 550, 1500, "", gc, t, center);
-        gc.setFill(Color.ORANGE);
-        drawPlanet(0.95, 15, 550, 1500, "", gc, t, center);
+        List<SolarObject> saturnMoons = new ArrayList<>();
+        saturnMoons.add(new SolarObject(new ArrayList<>(), 45, Color.LIGHTGOLDENRODYELLOW, "", 0, 0, 1200, 0));
+        saturnMoons.add(new SolarObject(new ArrayList<>(), 43, Color.BLACK, "Saturn", 0, 0, 1200, 0));
 
-    }
+        SolarObject saturn = new SolarObject(saturnMoons, 25, Color.ORANGE, "", 0, 0.85, 1200, 550);
+        planets.add(saturn);
 
-    public static void drawPlanet(double speed, double size, double distance, double offset, String name, GraphicsContext gc, double t, Vector2d center){
-        Vector2d circlePos = Vector2d.onCircle(speed*(t+offset)).scale(distance).add(center);
-        gc.fillOval( circlePos.x-(size/2), circlePos.y-(size/2), size, size );
-        gc.setFill(Color.WHITE);
-        gc.fillText(name, circlePos.x, circlePos.y-size);
-    }
-
-    public static void drawMoon(double moonSpeed, double planetSpeed, double moonSize, double moonDistance, double planetDistance, double planetOffset, GraphicsContext gc, double t, Vector2d planetCenter){
-        Vector2d planetPos = Vector2d.onCircle(planetSpeed*(t+planetOffset)).scale(planetDistance).add(planetCenter);
-        Vector2d moonPos = Vector2d.onCircle(moonSpeed*t).scale(moonDistance).add(planetPos);
-        gc.fillOval( moonPos.x-(moonSize/2), moonPos.y-(moonSize/2), moonSize, moonSize );
-    }
-
-    public static void drawMoonOrbiter(double moonSpeed, double planetSpeed, double orbiterSpeed, double moonDistance, double planetDistance, double orbiterDistance, double planetOffset, GraphicsContext gc, double t, Vector2d planetCenter){
-        Vector2d planetPos = Vector2d.onCircle(planetSpeed*(t+planetOffset)).scale(planetDistance).add(planetCenter);
-        Vector2d moonPos = Vector2d.onCircle(moonSpeed*t).scale(moonDistance).add(planetPos);
-        Vector2d orbiterPos = Vector2d.onCircle(orbiterSpeed*t).scale(orbiterDistance).add(moonPos);
-        gc.fillOval( orbiterPos.x, orbiterPos.y, 1, 1 );
+        // sun
+        return new SolarObject(planets, 100, Color.YELLOW, "", 0, 133, 0, 200);
     }
 }
