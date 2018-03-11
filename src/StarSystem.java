@@ -61,6 +61,6 @@ public class StarSystem {
         planets.add(saturn);
 
         // sun
-        return new SolarObject(planets, 100, Color.YELLOW, "", 0, 133, 0, 200);
+        return new SolarObject(planets, 100, Color.YELLOW, "", 0, 0, 0, 0);
     }
 }

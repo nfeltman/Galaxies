@@ -10,17 +10,18 @@ public class MovingPoint {
     // step a timestep
     // assumes no external forces on the
     public MovingPoint step(double deltaT) {
-        return null;
+        return new MovingPoint(location.add((velocity.scale(deltaT))), velocity);
     }
 
     // step a timestep, with an external force
     // uses a linear approximation
     public MovingPoint stepForceApprox(double deltaT, Vector2d externalForces) {
-        return null;
+        return new MovingPoint(location.add((velocity.scale(deltaT))), velocity.add(externalForces.scale(deltaT)));
     }
 
     // step a certain timestep with a constant external force
     public MovingPoint stepForceExact(double deltaT, Vector2d externalForces) {
-        return null;
+        return new MovingPoint(location.add((velocity.scale(deltaT))).add(externalForces.scale((deltaT*deltaT)/2)),
+                velocity.add(externalForces.scale(deltaT)));
     }
 }
