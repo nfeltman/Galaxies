@@ -8,7 +8,11 @@ import java.util.List;
 public class StarSystem {
     public static final double G = 9.8;
 
-    public static void drawSolarSystem(GraphicsContext gc, double t, double width, double height) {
+    public static SystemState updateSolarSystem(SystemState state, double deltaT) {
+        return state;
+    }
+
+    public static void drawSolarSystem(SystemState state, GraphicsContext gc, double width, double height) {
 
         Vector2d center = new Vector2d(width / 2, height / 2);
         gc.setTextAlign(TextAlignment.CENTER);

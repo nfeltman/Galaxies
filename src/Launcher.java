@@ -16,6 +16,7 @@ public class Launcher extends Application {
     // Size of the canvas for the Mandelbrot set
     private static final int CANVAS_WIDTH = 1500;
     private static final int CANVAS_HEIGHT = 1200;
+    long lastNanoTime;
 
     @Override
     public void start(Stage theStage) {
@@ -30,14 +31,16 @@ public class Launcher extends Application {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        final long startNanoTime = System.nanoTime();
+        lastNanoTime = System.nanoTime();
 
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
             {
-                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-                StarSystem.drawSolarSystem(gc,t,CANVAS_WIDTH,CANVAS_HEIGHT);
+                SystemState state = new SystemState();
+                state = StarSystem.updateSolarSystem(state, (currentNanoTime - lastNanoTime) / 1000000000.0);
+                lastNanoTime = currentNanoTime;
+                StarSystem.drawSolarSystem(gc,state,CANVAS_WIDTH,CANVAS_HEIGHT);
             }
         }.start();
 
