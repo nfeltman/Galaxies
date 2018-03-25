@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StarSystem {
+    public static final double G = 9.8;
 
     public static void drawSolarSystem(GraphicsContext gc, double t, double width, double height) {
 
@@ -25,11 +26,11 @@ public class StarSystem {
         List<SolarObject> planets = new ArrayList<>();
 
         // mercury
-        SolarObject mercury = new SolarObject(new ArrayList<>(),15, Color.ORANGERED, "Mercury", 0, 1.4, 250, 120);
+        SolarObject mercury = new SolarObject(new ArrayList<>(),15, Color.ORANGERED, "Mercury", 20, 1.4, 250, 120);
         planets.add(mercury);
 
         // venus
-        SolarObject venus = new SolarObject(new ArrayList<>(),20, Color.ORANGE, "Venus", 0, 1.1, 500, 150);
+        SolarObject venus = new SolarObject(new ArrayList<>(),20, Color.ORANGE, "Venus", 48, 1.1, 500, 150);
         planets.add(venus);
 
         // earth
@@ -39,9 +40,9 @@ public class StarSystem {
         List<SolarObject> moonOrbiters = new ArrayList<>();
         moonOrbiters.add(new SolarObject(new ArrayList<>(), 1, Color.WHITE, "", 0, 26, 1000, 5));
         List<SolarObject> earthMoons = new ArrayList<>();
-        earthMoons.add(new SolarObject(moonOrbiters, 5, Color.LIGHTGRAY, "", 0, 13, 1000, earthSize));
+        earthMoons.add(new SolarObject(moonOrbiters, 5, Color.LIGHTGRAY, "", 12.5, 13, 1000, earthSize));
 
-        SolarObject earth = new SolarObject(earthMoons, earthSize, Color.BLUE, "Earth", 0, 1, 1000, earthDistance);
+        SolarObject earth = new SolarObject(earthMoons, earthSize, Color.BLUE, "Earth", 50, 1, 1000, earthDistance);
         planets.add(earth);
 
         // mars
@@ -49,7 +50,7 @@ public class StarSystem {
         marsMoons.add(new SolarObject(new ArrayList<>(), 1, Color.GRAY, "", 0, 16, 0, 16));
         marsMoons.add(new SolarObject(new ArrayList<>(), 1, Color.GRAY, "", 0, 14, 0, 16));
 
-        SolarObject mars = new SolarObject(marsMoons, 16, Color.DARKRED, "Mars", 0, 0.95, 0, 300);
+        SolarObject mars = new SolarObject(marsMoons, 16, Color.DARKRED, "Mars", 30, 0.95, 0, 300);
         planets.add(mars);
 
         // saturn
@@ -57,10 +58,17 @@ public class StarSystem {
         saturnMoons.add(new SolarObject(new ArrayList<>(), 45, Color.LIGHTGOLDENRODYELLOW, "", 0, 0, 1200, 0));
         saturnMoons.add(new SolarObject(new ArrayList<>(), 43, Color.BLACK, "Saturn", 0, 0, 1200, 0));
 
-        SolarObject saturn = new SolarObject(saturnMoons, 25, Color.ORANGE, "", 0, 0.85, 1200, 550);
+        SolarObject saturn = new SolarObject(saturnMoons, 25, Color.ORANGE, "", 100, 0.85, 1200, 550);
         planets.add(saturn);
 
         // sun
-        return new SolarObject(planets, 100, Color.YELLOW, "", 0, 0, 0, 0);
+        return new SolarObject(planets, 100, Color.YELLOW, "", 1000, 0, 0, 0);
+    }
+
+    public static Vector2d gravitationalAcceleration(Vector2d attracteeLocation, Vector2d attractorLocation, double attractorMass) {
+        double distance = Vector2d.distance(attractorLocation, attracteeLocation);
+        double magnitude = (G * attractorMass) / (distance*distance);
+        Vector2d direction = attractorLocation.subtract(attracteeLocation).scale(1/distance);
+        return direction.scale(magnitude);
     }
 }
