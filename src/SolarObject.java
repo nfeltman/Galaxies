@@ -34,4 +34,11 @@ public class SolarObject {
         gc.setFill(Color.WHITE);
         gc.fillText(name, circlePos.x, circlePos.y-size);
     }
+
+    public Vector2d calcGravity(Vector2d point, double t, Vector2d center){
+        Vector2d circlePos = Vector2d.onCircle(speed*(t+offset)).scale(distance).add(center);
+        Vector2d result = Vector2d.gravitationalAcceleration(point, circlePos, mass);
+        for (SolarObject so : satellites) result.add(so.calcGravity(point, t, circlePos));
+        return result;
+    }
 }

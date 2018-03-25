@@ -15,7 +15,14 @@ public class Vector2d {
         return new Vector2d(Math.cos(theta), Math.sin(theta));
     }
 
-    public Vector2d scale (double scalar){
-        return new Vector2d(x*scalar, y*scalar);
+    public Vector2d scale (double scalar) {
+        return new Vector2d(x * scalar, y * scalar);
+    }
+    // calculate the acceleration due to gravity of the attractor on the attractee
+    public static Vector2d gravitationalAcceleration(Vector2d attracteeLocation, Vector2d attractorLocation, double attractorMass) {
+        return new Vector2d((9.8*attractorMass)/Math.abs(attractorLocation.x-attracteeLocation.x), (9.8*attractorMass)/Math.abs(attractorLocation.y-attracteeLocation.y));
+    }
+    public String toString(){
+        return "x: " + x + "\ny: " + y;
     }
 }
