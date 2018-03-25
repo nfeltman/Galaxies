@@ -6,10 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StarSystem {
-    public static final double G = 9.8;
+    public static final double G = 5000;
 
     public static SystemState updateSolarSystem(SystemState state, double deltaT) {
-        return state;
+        ArrayList<MovingPoint> nextAsteroids = new ArrayList<MovingPoint>();
+        for (MovingPoint ast : state.asteroids){
+            SolarObject sun = constructSolarSystem();
+            Vector2d center = new Vector2d(750, 600);
+            Vector2d calcGravity = sun.calcGravity(ast.location, deltaT, center);
+            nextAsteroids.add(ast.stepForceExact(deltaT, calcGravity));
+        }
+        return new SystemState(state.timeElapsed + deltaT, nextAsteroids);
     }
 
     public static void drawSolarSystem(SystemState state, GraphicsContext gc, double width, double height) {
@@ -22,7 +29,9 @@ public class StarSystem {
         gc.fillRect(0,0, width, height);
 
         SolarObject sun = constructSolarSystem();
-        sun.draw(gc, t, center);
+        sun.draw(gc, state.timeElapsed, center);
+        gc.setFill(Color.GRAY);
+        for (MovingPoint ast : state.asteroids)  gc.fillOval(ast.location.x, ast.location.y, 3, 3);
     }
 
     public static SolarObject constructSolarSystem(){
@@ -34,7 +43,7 @@ public class StarSystem {
         planets.add(mercury);
 
         // venus
-        SolarObject venus = new SolarObject(new ArrayList<>(),20, Color.ORANGE, "Venus", 48, 1.1, 500, 150);
+        SolarObject venus = new SolarObject(new ArrayList<>(),20, Color.ORANGE, "Venus", 0, 1.1, 500, 150);
         planets.add(venus);
 
         // earth
@@ -44,9 +53,9 @@ public class StarSystem {
         List<SolarObject> moonOrbiters = new ArrayList<>();
         moonOrbiters.add(new SolarObject(new ArrayList<>(), 1, Color.WHITE, "", 0, 26, 1000, 5));
         List<SolarObject> earthMoons = new ArrayList<>();
-        earthMoons.add(new SolarObject(moonOrbiters, 5, Color.LIGHTGRAY, "", 12.5, 13, 1000, earthSize));
+        earthMoons.add(new SolarObject(moonOrbiters, 5, Color.LIGHTGRAY, "", 0, 13, 1000, earthSize));
 
-        SolarObject earth = new SolarObject(earthMoons, earthSize, Color.BLUE, "Earth", 50, 1, 1000, earthDistance);
+        SolarObject earth = new SolarObject(earthMoons, earthSize, Color.BLUE, "Earth", 0, 1, 1000, earthDistance);
         planets.add(earth);
 
         // mars
@@ -54,7 +63,7 @@ public class StarSystem {
         marsMoons.add(new SolarObject(new ArrayList<>(), 1, Color.GRAY, "", 0, 16, 0, 16));
         marsMoons.add(new SolarObject(new ArrayList<>(), 1, Color.GRAY, "", 0, 14, 0, 16));
 
-        SolarObject mars = new SolarObject(marsMoons, 16, Color.DARKRED, "Mars", 30, 0.95, 0, 300);
+        SolarObject mars = new SolarObject(marsMoons, 16, Color.DARKRED, "Mars", 0, 0.95, 0, 300);
         planets.add(mars);
 
         // saturn
@@ -62,8 +71,10 @@ public class StarSystem {
         saturnMoons.add(new SolarObject(new ArrayList<>(), 45, Color.LIGHTGOLDENRODYELLOW, "", 0, 0, 1200, 0));
         saturnMoons.add(new SolarObject(new ArrayList<>(), 43, Color.BLACK, "Saturn", 0, 0, 1200, 0));
 
-        SolarObject saturn = new SolarObject(saturnMoons, 25, Color.ORANGE, "", 100, 0.85, 1200, 550);
+        SolarObject saturn = new SolarObject(saturnMoons, 25, Color.ORANGE, "", 0, 0.85, 1200, 550);
         planets.add(saturn);
+
+        // asteroid
 
         // sun
         return new SolarObject(planets, 100, Color.YELLOW, "", 1000, 0, 0, 0);

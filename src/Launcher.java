@@ -17,7 +17,7 @@ public class Launcher extends Application {
     private static final int CANVAS_WIDTH = 1500;
     private static final int CANVAS_HEIGHT = 1200;
     long lastNanoTime;
-
+    SystemState state;
     @Override
     public void start(Stage theStage) {
         theStage.setTitle( "Simple Solar System" );
@@ -32,15 +32,13 @@ public class Launcher extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         lastNanoTime = System.nanoTime();
+        state = new SystemState();
 
-        new AnimationTimer()
-        {
-            public void handle(long currentNanoTime)
-            {
-                SystemState state = new SystemState();
+        new AnimationTimer() {
+            public void handle(long currentNanoTime){
                 state = StarSystem.updateSolarSystem(state, (currentNanoTime - lastNanoTime) / 1000000000.0);
                 lastNanoTime = currentNanoTime;
-                StarSystem.drawSolarSystem(gc,state,CANVAS_WIDTH,CANVAS_HEIGHT);
+                StarSystem.drawSolarSystem(state, gc, CANVAS_WIDTH,CANVAS_HEIGHT);
             }
         }.start();
 

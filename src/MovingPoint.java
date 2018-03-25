@@ -1,6 +1,6 @@
 public class MovingPoint {
-    private final Vector2d location;
-    private final Vector2d velocity;
+    public final Vector2d location;
+    public final Vector2d velocity;
 
     public MovingPoint(Vector2d location, Vector2d velocity) {
         this.location = location;
