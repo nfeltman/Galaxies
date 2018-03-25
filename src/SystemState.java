@@ -7,6 +7,11 @@ public class SystemState {
     public SystemState(double timeElapsed, ArrayList<MovingPoint> asteroids){
         this.timeElapsed = timeElapsed;
         this.asteroids = asteroids;
+        // Destroys asteroids when they collide with the sun
+        for (int i = 0; i < asteroids.size(); i++){
+            if (Vector2d.distance(asteroids.get(i).location, new Vector2d(750, 600)) <= 50)
+                asteroids.remove(i);
+        }
     }
 
     public SystemState() {
