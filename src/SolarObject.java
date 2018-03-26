@@ -30,7 +30,7 @@ public class SolarObject {
         Vector2d circlePos = Vector2d.onCircle(speed*(t+offset)).scale(distance).add(center);
         for (SolarObject so : satellites) so.draw(gc, t, circlePos);
         gc.setFill(color);
-        gc.fillOval( circlePos.x-(size/2), circlePos.y-(size/2), size, size );
+        gc.fillOval( circlePos.x-(size/2), circlePos.y-(size/2), size, size);
         gc.setFill(Color.WHITE);
         gc.fillText(name, circlePos.x, circlePos.y-size);
     }

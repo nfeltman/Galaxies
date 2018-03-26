@@ -37,7 +37,6 @@ public class Launcher extends Application {
         new AnimationTimer() {
             public void handle(long currentNanoTime){
                 state = StarSystem.updateSolarSystem(state, (currentNanoTime - lastNanoTime) / 1000000000.0);
-                lastNanoTime = currentNanoTime;
                 StarSystem.drawSolarSystem(state, gc, CANVAS_WIDTH,CANVAS_HEIGHT);
             }
         }.start();
