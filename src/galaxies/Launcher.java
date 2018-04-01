@@ -1,5 +1,6 @@
 package galaxies;
 
+import galaxies.NBody.NBodySimulation;
 import galaxies.solar.SolarSimulation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,8 +18,8 @@ public class Launcher extends Application {
     private static final int CANVAS_WIDTH = 1500;
     private static final int CANVAS_HEIGHT = 1000;
     long lastNanoTime;
-    Simulation<SolarSimulation.SystemState> sim = new SolarSimulation();
-    SolarSimulation.SystemState state;
+    Simulation<NBodySimulation.SystemState> sim = new NBodySimulation();
+    NBodySimulation.SystemState state;
 
     @Override
     public void start(Stage theStage) {
