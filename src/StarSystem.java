@@ -5,22 +5,36 @@ import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarSystem {
+public class StarSystem implements Simulation<StarSystem.SystemState> {
     public static final double G = 5000;
 
-    public static SystemState updateSolarSystem(SystemState state, double deltaT) {
+    @Override
+    public SystemState init() {
+        ArrayList<MovingPoint> asteroids = new ArrayList<MovingPoint>();
+        for (int i = 0; i < 20; i++){
+            asteroids.add(new MovingPoint(new Vector2d(Math.random()*1500, Math.random()*1200),
+                    new Vector2d((Math.random()-0.5)*200, (Math.random()-0.5)*200)));
+        }
+
+        return new SystemState(0, asteroids);
+    }
+
+    @Override
+    public SystemState stepForward(SystemState state, double deltaT) {
         ArrayList<MovingPoint> nextAsteroids = new ArrayList<MovingPoint>();
         for (MovingPoint ast : state.asteroids){
             SolarObject sun = constructSolarSystem();
             Vector2d center = new Vector2d(750, 600);
             Vector2d calcGravity = sun.calcGravity(ast.location, deltaT, center);
-            nextAsteroids.add(ast.stepForceExact(deltaT-state.timeElapsed, calcGravity));
+            MovingPoint nextAst = ast.stepForceExact(deltaT-state.timeElapsed, calcGravity);
+            if (Vector2d.distance(nextAst.location, center) > 50)
+                nextAsteroids.add(nextAst);
         }
         return new SystemState(deltaT, nextAsteroids);
     }
 
-    public static void drawSolarSystem(SystemState state, GraphicsContext gc, double width, double height) {
-
+    @Override
+    public void draw(SystemState state, GraphicsContext gc, double width, double height) {
         Vector2d center = new Vector2d(width / 2, height / 2);
         gc.setTextAlign(TextAlignment.CENTER);
 
@@ -32,6 +46,7 @@ public class StarSystem {
         sun.draw(gc, state.timeElapsed, center);
         gc.setFill(Color.GRAY);
         for (MovingPoint ast : state.asteroids)  gc.fillOval(ast.location.x, ast.location.y, 3, 3);
+
     }
 
     public static SolarObject constructSolarSystem(){
@@ -78,6 +93,16 @@ public class StarSystem {
 
         // sun
         return new SolarObject(planets, 100, Color.YELLOW, "", 1000, 0, 0, 0);
+    }
+
+    public static class SystemState {
+        public double timeElapsed;
+        public ArrayList<MovingPoint> asteroids;
+
+        public SystemState(double timeElapsed, ArrayList<MovingPoint> asteroids){
+            this.timeElapsed = timeElapsed;
+            this.asteroids = asteroids;
+        }
     }
 
     public static Vector2d gravitationalAcceleration(Vector2d attracteeLocation, Vector2d attractorLocation, double attractorMass) {
