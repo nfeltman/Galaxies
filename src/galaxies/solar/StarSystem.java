@@ -1,12 +1,16 @@
+package galaxies.solar;
+
+import galaxies.Simulation;
+import galaxies.util.MovingPoint;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import galaxies.util.Vector2d;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StarSystem implements Simulation<StarSystem.SystemState> {
-    public static final double G = 5000;
 
     @Override
     public SystemState init() {
@@ -105,10 +109,4 @@ public class StarSystem implements Simulation<StarSystem.SystemState> {
         }
     }
 
-    public static Vector2d gravitationalAcceleration(Vector2d attracteeLocation, Vector2d attractorLocation, double attractorMass) {
-        double distance = Vector2d.distance(attractorLocation, attracteeLocation);
-        double magnitude = (G * attractorMass) / (distance*distance);
-        Vector2d direction = attractorLocation.subtract(attracteeLocation).scale(1/distance);
-        return direction.scale(magnitude);
-    }
 }

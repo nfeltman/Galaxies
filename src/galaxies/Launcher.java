@@ -1,3 +1,7 @@
+package galaxies;
+
+import galaxies.Simulation;
+import galaxies.solar.StarSystem;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;

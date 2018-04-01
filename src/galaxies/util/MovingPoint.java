@@ -1,3 +1,5 @@
+package galaxies.util;
+
 public class MovingPoint {
     public final Vector2d location;
     public final Vector2d velocity;

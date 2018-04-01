@@ -1,3 +1,5 @@
+package galaxies.util;
+
 public class Vector2d {
     public final double x;
     public final double y;

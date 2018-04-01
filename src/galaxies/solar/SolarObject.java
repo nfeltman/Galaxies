@@ -1,5 +1,9 @@
+package galaxies.solar;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import galaxies.util.Physics;
+import galaxies.util.Vector2d;
 
 import java.util.List;
 
@@ -37,7 +41,7 @@ public class SolarObject {
 
     public Vector2d calcGravity(Vector2d point, double t, Vector2d center){
         Vector2d circlePos = Vector2d.onCircle(speed*(t+offset)).scale(distance).add(center);
-        Vector2d result = StarSystem.gravitationalAcceleration(point, circlePos, mass);
+        Vector2d result = Physics.gravitationalAcceleration(point, circlePos, mass);
         for (SolarObject so : satellites) result = result.add(so.calcGravity(point, t, circlePos));
         return result;
     }

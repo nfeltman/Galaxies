@@ -1,3 +1,5 @@
+package galaxies;
+
 import javafx.scene.canvas.GraphicsContext;
 
 public interface Simulation<State> {
