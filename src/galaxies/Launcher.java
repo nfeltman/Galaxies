@@ -14,8 +14,8 @@ import javafx.stage.Stage;
  */
 public class Launcher extends Application {
     // Size of the canvas for the Mandelbrot set
-    private static final int CANVAS_WIDTH = 1000;
-    private static final int CANVAS_HEIGHT = 800;
+    private static final int CANVAS_WIDTH = 1500;
+    private static final int CANVAS_HEIGHT = 1000;
     long lastNanoTime;
     Simulation<SolarSimulation.SystemState> sim = new SolarSimulation();
     SolarSimulation.SystemState state;
@@ -39,6 +39,7 @@ public class Launcher extends Application {
         new AnimationTimer() {
             public void handle(long currentNanoTime){
                 state = sim.stepForward(state, (currentNanoTime - lastNanoTime) / 1000000000.0);
+                lastNanoTime = currentNanoTime;
                 sim.draw(state, gc, CANVAS_WIDTH, CANVAS_HEIGHT);
             }
         }.start();

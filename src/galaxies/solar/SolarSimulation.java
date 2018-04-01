@@ -15,7 +15,7 @@ public class SolarSimulation implements Simulation<SolarSimulation.SystemState> 
     public SystemState init(int width, int height) {
         ArrayList<MovingPoint> asteroids = new ArrayList<MovingPoint>();
         Vector2d solarCenter = new Vector2d(width/2.0, height/2.0);
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 200; i++){
             asteroids.add(new MovingPoint(new Vector2d(Math.random()*1500, Math.random()*1200),
                     new Vector2d((Math.random()-0.5)*200, (Math.random()-0.5)*200)));
         }
@@ -25,14 +25,16 @@ public class SolarSimulation implements Simulation<SolarSimulation.SystemState> 
 
     @Override
     public SystemState stepForward(SystemState state, double deltaT) {
+        // System.out.println("Taking step of size " + deltaT + ", and current time is " + state.timeElapsed);
+
         ArrayList<MovingPoint> nextAsteroids = new ArrayList<MovingPoint>();
         for (MovingPoint ast : state.asteroids){
-            Vector2d calcGravity = state.solarSystem.calcGravity(ast.location, deltaT, state.solarCenter);
-            MovingPoint nextAst = ast.stepForceExact(deltaT-state.timeElapsed, calcGravity);
+            Vector2d calcGravity = state.solarSystem.calcGravity(ast.location, state.timeElapsed, state.solarCenter);
+            MovingPoint nextAst = ast.stepForceExact(deltaT, calcGravity);
             if (Vector2d.distance(nextAst.location, state.solarCenter) > 50)
                 nextAsteroids.add(nextAst);
         }
-        return new SystemState(state.solarSystem, state.solarCenter, deltaT, nextAsteroids);
+        return new SystemState(state.solarSystem, state.solarCenter, state.timeElapsed + deltaT, nextAsteroids);
     }
 
     @Override
