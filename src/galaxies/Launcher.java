@@ -1,7 +1,6 @@
 package galaxies;
 
-import galaxies.Simulation;
-import galaxies.solar.StarSystem;
+import galaxies.solar.SolarSimulation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -15,11 +14,11 @@ import javafx.stage.Stage;
  */
 public class Launcher extends Application {
     // Size of the canvas for the Mandelbrot set
-    private static final int CANVAS_WIDTH = 1500;
-    private static final int CANVAS_HEIGHT = 1200;
+    private static final int CANVAS_WIDTH = 1000;
+    private static final int CANVAS_HEIGHT = 800;
     long lastNanoTime;
-    Simulation<StarSystem.SystemState> sim = new StarSystem();
-    StarSystem.SystemState state;
+    Simulation<SolarSimulation.SystemState> sim = new SolarSimulation();
+    SolarSimulation.SystemState state;
 
     @Override
     public void start(Stage theStage) {
@@ -35,7 +34,7 @@ public class Launcher extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         lastNanoTime = System.nanoTime();
-        state = sim.init();
+        state = sim.init(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         new AnimationTimer() {
             public void handle(long currentNanoTime){
