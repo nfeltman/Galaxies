@@ -5,9 +5,13 @@ import galaxies.util.MovingPoint;
 public class Asteroid {
     public final MovingPoint point;
     public final double mass;
+    public final int charge;
+    public final int size;
 
-    public Asteroid(MovingPoint point, double mass){
+    public Asteroid(MovingPoint point, double mass, int charge, int size){
         this.point = point;
         this.mass = mass;
+        this.charge = charge;
+        this.size = size;
     }
 }

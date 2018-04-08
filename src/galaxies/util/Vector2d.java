@@ -29,6 +29,18 @@ public class Vector2d {
         return Math.sqrt(((p2.x-p1.x)*(p2.x-p1.x)) + ((p2.y-p1.y)*(p2.y-p1.y)));
     }
 
+    public static double distanceSQ(Vector2d p1, Vector2d p2){
+        return ((p2.x-p1.x)*(p2.x-p1.x)) + ((p2.y-p1.y)*(p2.y-p1.y));
+    }
+
+    public double lengthSQ(){
+        return (x * x) + (y * y);
+    }
+
+    public static double dotProduct(Vector2d p1, Vector2d p2){
+        return (p1.x * p2.x) + (p1.y * p2.y);
+    }
+
     public String toString(){
         return "x: " + x + "\ny: " + y;
     }
