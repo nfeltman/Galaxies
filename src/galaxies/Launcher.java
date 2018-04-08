@@ -39,8 +39,16 @@ public class Launcher extends Application {
 
         new AnimationTimer() {
             public void handle(long currentNanoTime){
-                state = sim.stepForward(state, (currentNanoTime - lastNanoTime) / 1000000000.0);
+                long actualDT = currentNanoTime - lastNanoTime;
                 lastNanoTime = currentNanoTime;
+                long numSteps = (actualDT / 1000000) + 1; // long math!
+                double stepSize = actualDT / 1000000000.0 / numSteps;
+
+                // simulate
+                for(int i=0; i < numSteps; i++)
+                    state = sim.stepForward(state, stepSize);
+
+                // draw
                 sim.draw(state, gc, CANVAS_WIDTH, CANVAS_HEIGHT);
             }
         }.start();

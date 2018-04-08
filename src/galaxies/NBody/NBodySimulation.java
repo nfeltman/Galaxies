@@ -14,12 +14,12 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
     @Override
     public SystemState init(int width, int height) {
         ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-        for (int i = 0; i < 200; i++){
+        for (int i = 0; i < 2; i++){
             asteroids.add(new Asteroid(
                     new MovingPoint(
-                            new Vector2d(Math.random()*1500, Math.random()*1200),
-                    new Vector2d(0, 0)),
-                    0.01));
+                            new Vector2d(Math.random()*100+500, Math.random()*100+500),
+                    new Vector2d(Math.random()*10-5, Math.random()*10-5)),
+                    0.1));
         }
         return new SystemState(asteroids);
     }
@@ -35,7 +35,7 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
                     gravityForce = gravityForce.add(result);
                 }
             }
-            Asteroid nextAst = new Asteroid(ast.point.stepForceExact(dt, gravityForce), ast.mass);
+            Asteroid nextAst = new Asteroid(ast.point.stepForceApprox(dt, gravityForce), ast.mass);
             nextAsteroids.add(nextAst);
         }
 
@@ -53,8 +53,14 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
         for (Asteroid ast : s.asteroids) gc.fillOval(ast.point.location.x, ast.point.location.y, 3, 3);
 
         gc.setFill(Color.WHITE);
-        gc.fillText("Kinetic energy: " + String.valueOf(kineticEnergy(s)), 1350, 950);
-        gc.fillText("Potential energy: " + String.valueOf(potentialEnergy(s)), 1350, 970);
+
+        double kineticEnergy = kineticEnergy(s);
+        double potentialEnergy = potentialEnergy(s);
+        double totalEnergy = kineticEnergy + potentialEnergy;
+
+        gc.fillText("Kinetic energy: " + String.valueOf(kineticEnergy), 1350, 930);
+        gc.fillText("Potential energy: " + String.valueOf(potentialEnergy), 1350, 950);
+        gc.fillText("Total energy: " + String.valueOf(totalEnergy), 1350, 970);
     }
 
     public double kineticEnergy(SystemState s){
