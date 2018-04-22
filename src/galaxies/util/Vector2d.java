@@ -29,7 +29,7 @@ public class Vector2d {
         return Math.sqrt(((p2.x-p1.x)*(p2.x-p1.x)) + ((p2.y-p1.y)*(p2.y-p1.y)));
     }
 
-    public static double distanceSQ(Vector2d p1, Vector2d p2){
+    public static double distanceSq(Vector2d p1, Vector2d p2){
         return ((p2.x-p1.x)*(p2.x-p1.x)) + ((p2.y-p1.y)*(p2.y-p1.y));
     }
 

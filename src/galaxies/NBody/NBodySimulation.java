@@ -14,12 +14,12 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
     @Override
     public SystemState init(int width, int height) {
         ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-        for (int i = 0; i < 125; i++){
+        for (int i = 0; i < 50; i++){
             asteroids.add(new Asteroid(
                     new MovingPoint(
                             new Vector2d(Math.random()*1500, Math.random()*1200),
                     new Vector2d(Math.random()*10-5, Math.random()*10-5)),
-                    0.1, Math.random() < 0.5 ? -1 : 1, 10));
+                    0.1, Math.random() < 0.33333 ? -1 : (Math.random() < 0.5 ? 1 : 0), Math.random() < 0.5 ? 10 : 20));
         }
         return new SystemState(asteroids);
     }
@@ -44,8 +44,9 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
 
             for (Asteroid otherAst : s.asteroids){
                 if (otherAst != ast){
+                    double avgSize = ((((double) ast.size) + ((double) ast.size)) / 2);
                     MovingPoint rel = ast.point.subtract(otherAst.point); // our asteroid relative to the other
-                    if (rel.location.lengthSq() < ast.size * ast.size // if the asteroids are close
+                    if (rel.location.lengthSq() < avgSize * avgSize // if the asteroids are close
                             && rel.location.dotProduct(rel.velocity) < 0) // and they're moving into each other
                         nextVelocity = MovingPoint.elasticCollision(ast.point, otherAst.point, ast.mass, otherAst.mass);
                 }
@@ -73,7 +74,8 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
             switch (ast.charge) {
                 case 1 : gc.setFill(Color.RED); break;
                 case -1: gc.setFill(Color.BLUE); break;
-                default: gc.setFill(Color.GREEN);
+                case 0: gc.setFill(Color.GREEN); break;
+                default: break;
             }
             gc.fillOval(ast.point.location.x - (ast.size / 2), ast.point.location.y - (ast.size / 2), ast.size, ast.size);
         }
