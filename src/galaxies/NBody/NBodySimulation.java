@@ -44,7 +44,9 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
 
             for (Asteroid otherAst : s.asteroids){
                 if (otherAst != ast){
-                    if (Vector2d.distance(ast.point.location, otherAst.point.location) < ast.size)
+                    MovingPoint rel = ast.point.subtract(otherAst.point); // our asteroid relative to the other
+                    if (rel.location.lengthSq() < ast.size * ast.size // if the asteroids are close
+                            && rel.location.dotProduct(rel.velocity) < 0) // and they're moving into each other
                         nextVelocity = MovingPoint.elasticCollision(ast.point, otherAst.point, ast.mass, otherAst.mass);
                 }
             }

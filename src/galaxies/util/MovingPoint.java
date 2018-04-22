@@ -9,6 +9,10 @@ public class MovingPoint {
         this.velocity = velocity;
     }
 
+    public MovingPoint subtract(MovingPoint p){
+        return new MovingPoint(location.subtract(p.location), velocity.subtract(p.velocity));
+    }
+
     // step a timestep
     // assumes no external forces on the
     public MovingPoint step(double deltaT) {
@@ -35,7 +39,7 @@ public class MovingPoint {
 
         Vector2d result = v1;
         Vector2d secondTerm = x1.subtract(x2);
-        secondTerm = secondTerm.scale(Vector2d.dotProduct(v1.subtract(v2), x1.subtract(x2))/x2.subtract(x1).lengthSQ());
+        secondTerm = secondTerm.scale(Vector2d.dotProduct(v1.subtract(v2), x1.subtract(x2))/x2.subtract(x1).lengthSq());
         secondTerm = secondTerm.scale((2*m2)/(m1+m2));
         return result.subtract(secondTerm);
     }

@@ -33,13 +33,15 @@ public class Vector2d {
         return ((p2.x-p1.x)*(p2.x-p1.x)) + ((p2.y-p1.y)*(p2.y-p1.y));
     }
 
-    public double lengthSQ(){
+    public double lengthSq(){
         return (x * x) + (y * y);
     }
 
     public static double dotProduct(Vector2d p1, Vector2d p2){
         return (p1.x * p2.x) + (p1.y * p2.y);
     }
+
+    public double dotProduct(Vector2d other) { return dotProduct(this,other); }
 
     public String toString(){
         return "x: " + x + "\ny: " + y;
