@@ -5,6 +5,7 @@ import galaxies.util.MovingPoint;
 import galaxies.util.Physics;
 import galaxies.util.Vector2d;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 
@@ -24,7 +25,25 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
         return new SystemState(asteroids);
     }
 
+
     @Override
+    public SystemState stepForward(SystemState initialState, double dt, ArrayList<KeyEvent> presses) {
+        for (KeyEvent e : presses)
+            System.out.println("Event: "+e);
+
+        int numSteps = (int)(dt / 0.001) + 1;
+        double stepSize = dt / numSteps;
+        //System.out.println("step size: "+stepSize+" * "+numSteps);
+
+        // simulate
+        SystemState state = initialState;
+        for(int i=0; i < numSteps; i++) {
+            // delegate to the other stepForward
+            state = stepForward(state, stepSize);
+        }
+        return state;
+    }
+
     public SystemState stepForward(SystemState s, double dt) {
         ArrayList<Asteroid> nextAsteroids = new ArrayList<Asteroid>();
         for (Asteroid ast : s.asteroids){

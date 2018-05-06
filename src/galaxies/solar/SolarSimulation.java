@@ -3,6 +3,7 @@ package galaxies.solar;
 import galaxies.Simulation;
 import galaxies.util.MovingPoint;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import galaxies.util.Vector2d;
@@ -24,7 +25,7 @@ public class SolarSimulation implements Simulation<SolarSimulation.SystemState> 
     }
 
     @Override
-    public SystemState stepForward(SystemState state, double deltaT) {
+    public SystemState stepForward(SystemState state, double deltaT, ArrayList<KeyEvent> events) {
         // System.out.println("Taking step of size " + deltaT + ", and current time is " + state.timeElapsed);
 
         ArrayList<MovingPoint> nextAsteroids = new ArrayList<MovingPoint>();

@@ -4,11 +4,15 @@ import galaxies.NBody.NBodySimulation;
 import galaxies.solar.SolarSimulation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 /**
  * Mandelbrot set with JavaFX.
@@ -18,6 +22,7 @@ public class Launcher extends Application {
     private static final int CANVAS_WIDTH = 1500;
     private static final int CANVAS_HEIGHT = 1000;
     long lastNanoTime;
+    ArrayList<KeyEvent> keyPressed = new ArrayList<KeyEvent>();
     Simulation<NBodySimulation.SystemState> sim = new NBodySimulation();
     NBodySimulation.SystemState state;
 
@@ -26,8 +31,8 @@ public class Launcher extends Application {
         theStage.setTitle( "Simple Solar System" );
 
         Group root = new Group();
-        Scene theScene = new Scene( root );
-        theStage.setScene( theScene );
+        Scene scene = new Scene( root );
+        theStage.setScene( scene );
 
         Canvas canvas = new Canvas( CANVAS_WIDTH, CANVAS_HEIGHT );
         root.getChildren().add( canvas );
@@ -37,16 +42,16 @@ public class Launcher extends Application {
         lastNanoTime = System.nanoTime();
         state = sim.init(CANVAS_WIDTH, CANVAS_HEIGHT);
 
+        scene.setOnKeyPressed(e -> keyPressed.add(e));
+        scene.setOnKeyReleased(e -> keyPressed.add(e));
+
         new AnimationTimer() {
             public void handle(long currentNanoTime){
                 long actualDT = currentNanoTime - lastNanoTime;
                 lastNanoTime = currentNanoTime;
-                long numSteps = (actualDT / 1000000) + 1; // long math!
-                double stepSize = actualDT / 1000000000.0 / numSteps;
 
-                // simulate
-                for(int i=0; i < numSteps; i++)
-                    state = sim.stepForward(state, stepSize);
+                state = sim.stepForward(state, actualDT/1000000000.0, keyPressed);
+                keyPressed = new ArrayList<KeyEvent>();
 
                 // draw
                 sim.draw(state, gc, CANVAS_WIDTH, CANVAS_HEIGHT);
