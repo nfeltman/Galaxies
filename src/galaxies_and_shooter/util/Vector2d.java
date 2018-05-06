@@ -1,4 +1,4 @@
-package galaxies.util;
+package galaxies_and_shooter.util;
 
 public class Vector2d {
     public final double x;

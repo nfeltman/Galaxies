@@ -1,6 +1,5 @@
-package galaxies;
+package galaxies_and_shooter;
 
-import galaxies.util.Vector2d;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 

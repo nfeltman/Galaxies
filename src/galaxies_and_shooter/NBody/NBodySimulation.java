@@ -1,9 +1,9 @@
-package galaxies.NBody;
+package galaxies_and_shooter.NBody;
 
-import galaxies.Simulation;
-import galaxies.util.MovingPoint;
-import galaxies.util.Physics;
-import galaxies.util.Vector2d;
+import galaxies_and_shooter.Simulation;
+import galaxies_and_shooter.util.MovingPoint;
+import galaxies_and_shooter.util.Physics;
+import galaxies_and_shooter.util.Vector2d;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;

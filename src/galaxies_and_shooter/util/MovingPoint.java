@@ -1,4 +1,4 @@
-package galaxies.util;
+package galaxies_and_shooter.util;
 
 public class MovingPoint {
     public final Vector2d location;

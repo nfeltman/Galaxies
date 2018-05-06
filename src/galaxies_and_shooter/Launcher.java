@@ -1,10 +1,10 @@
-package galaxies;
+package galaxies_and_shooter;
 
-import galaxies.NBody.NBodySimulation;
-import galaxies.solar.SolarSimulation;
+import galaxies_and_shooter.NBody.NBodySimulation;
+import galaxies_and_shooter.shooter.ShooterSim;
+import galaxies_and_shooter.shooter.ShooterState;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -23,8 +23,9 @@ public class Launcher extends Application {
     private static final int CANVAS_HEIGHT = 1000;
     long lastNanoTime;
     ArrayList<KeyEvent> keyPressed = new ArrayList<KeyEvent>();
-    Simulation<NBodySimulation.SystemState> sim = new NBodySimulation();
-    NBodySimulation.SystemState state;
+    //Simulation<NBodySimulation.SystemState> sim = new NBodySimulation();
+    Simulation<ShooterState> sim = new ShooterSim();
+    ShooterState state;
 
     @Override
     public void start(Stage theStage) {

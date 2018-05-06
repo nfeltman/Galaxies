@@ -1,9 +1,9 @@
-package galaxies.solar;
+package galaxies_and_shooter.solar;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import galaxies.util.Physics;
-import galaxies.util.Vector2d;
+import galaxies_and_shooter.util.Physics;
+import galaxies_and_shooter.util.Vector2d;
 
 public class CelestialObject {
     // other parameters (size, color, name, mass)

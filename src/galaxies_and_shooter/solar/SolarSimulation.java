@@ -1,12 +1,12 @@
-package galaxies.solar;
+package galaxies_and_shooter.solar;
 
-import galaxies.Simulation;
-import galaxies.util.MovingPoint;
+import galaxies_and_shooter.Simulation;
+import galaxies_and_shooter.util.MovingPoint;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import galaxies.util.Vector2d;
+import galaxies_and_shooter.util.Vector2d;
 
 import java.util.ArrayList;
 

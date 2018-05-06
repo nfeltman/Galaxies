@@ -1,6 +1,6 @@
-package galaxies.NBody;
+package galaxies_and_shooter.NBody;
 
-import galaxies.util.MovingPoint;
+import galaxies_and_shooter.util.MovingPoint;
 
 public class Asteroid {
     public final MovingPoint point;
