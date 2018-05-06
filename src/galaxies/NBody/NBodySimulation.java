@@ -63,7 +63,7 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
 
             for (Asteroid otherAst : s.asteroids){
                 if (otherAst != ast){
-                    double avgSize = ((((double) ast.size) + ((double) ast.size)) / 2);
+                    double avgSize = ((((double) ast.size) + ((double) otherAst.size)) / 2);
                     MovingPoint rel = ast.point.subtract(otherAst.point); // our asteroid relative to the other
                     if (rel.location.lengthSq() < avgSize * avgSize // if the asteroids are close
                             && rel.location.dotProduct(rel.velocity) < 0) // and they're moving into each other
