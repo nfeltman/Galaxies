@@ -16,18 +16,19 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
     public SystemState init(int width, int height) {
         ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
         for (int i = 0; i < 50; i++){
+            int size = (int)(Math.random()*40)+5;
             asteroids.add(new Asteroid(
                     new MovingPoint(
                             new Vector2d(Math.random()*1500, Math.random()*1200),
                     new Vector2d(Math.random()*10-5, Math.random()*10-5)),
-                    0.1, Math.random() < 0.33333 ? -1 : (Math.random() < 0.5 ? 1 : 0), Math.random() < 0.5 ? 10 : 20));
+                    (double) size / 100, size));
         }
         return new SystemState(asteroids);
     }
 
 
     @Override
-    public SystemState stepForward(SystemState initialState, double dt, ArrayList<KeyEvent> presses) {
+    public SystemState stepForward(SystemState initialState, double dt, ArrayList<KeyEvent> presses, int width, int height) {
         for (KeyEvent e : presses)
             System.out.println("Event: "+e);
 
@@ -48,17 +49,14 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
         ArrayList<Asteroid> nextAsteroids = new ArrayList<Asteroid>();
         for (Asteroid ast : s.asteroids){
             Vector2d gravityForce = new Vector2d(0, 0);
-            Vector2d electromagneticForce = new Vector2d(0, 0);
             for (Asteroid otherAst : s.asteroids){
                 if (otherAst != ast){
                     Vector2d gravity = Physics.gravitationalAcceleration(ast.point.location, otherAst.point.location, otherAst.mass);
                     gravityForce = gravityForce.add(gravity);
                     Vector2d electromagnetic = Physics.gravitationalAcceleration(ast.point.location, otherAst.point.location, otherAst.mass);
-                    electromagnetic = electromagnetic.scale((ast.charge * otherAst.charge) * -20);
-                    electromagneticForce = electromagneticForce.add(electromagnetic);
                 }
             }
-            MovingPoint nextPoint = ast.point.stepForceApprox(dt, gravityForce.add(electromagneticForce));
+            MovingPoint nextPoint = ast.point.stepForceApprox(dt, gravityForce);
             Vector2d nextVelocity = nextPoint.velocity;
 
             for (Asteroid otherAst : s.asteroids){
@@ -75,7 +73,7 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
             if (ast.point.location.x > 1500 - (ast.size / 2)) nextVelocity = new Vector2d(-Math.abs(nextVelocity.x), nextVelocity.y);
             if (ast.point.location.y < ast.size / 2) nextVelocity = new Vector2d(nextVelocity.x, Math.abs(nextVelocity.y));
             if (ast.point.location.y > 1000 - (ast.size / 2)) nextVelocity = new Vector2d(nextVelocity.x, -Math.abs(nextVelocity.y));
-            Asteroid nextAst = new Asteroid(new MovingPoint(nextPoint.location, nextVelocity), ast.mass, ast.charge, ast.size);
+            Asteroid nextAst = new Asteroid(new MovingPoint(nextPoint.location, nextVelocity), ast.mass, ast.size);
             nextAsteroids.add(nextAst);
         }
 
@@ -89,13 +87,8 @@ public class NBodySimulation implements Simulation<NBodySimulation.SystemState> 
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, width, height);
 
-        for (Asteroid ast : s.asteroids){
-            switch (ast.charge) {
-                case 1 : gc.setFill(Color.RED); break;
-                case -1: gc.setFill(Color.BLUE); break;
-                case 0: gc.setFill(Color.GREEN); break;
-                default: break;
-            }
+        for (Asteroid ast : s.asteroids) {
+            gc.setFill(Color.GRAY);
             gc.fillOval(ast.point.location.x - (ast.size / 2), ast.point.location.y - (ast.size / 2), ast.size, ast.size);
         }
 

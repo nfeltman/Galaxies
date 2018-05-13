@@ -2,7 +2,7 @@ package galaxies_and_shooter.util;
 
 public class Physics {
 
-    public static final double G = 5000;
+    public static final double G = 10000;
 
     public static Vector2d gravitationalAcceleration(Vector2d attracteeLocation, Vector2d attractorLocation, double attractorMass) {
         double distance = Vector2d.distance(attractorLocation, attracteeLocation);
@@ -16,7 +16,7 @@ public class Physics {
     }
 
     public static double kineticEnergy(MovingPoint point, double mass){
-        double speed = (point.velocity.x*point.velocity.x) + (point.velocity.y*point.velocity.y);
-        return (mass*speed)/2;
+        double speedSq = (point.velocity.x*point.velocity.x) + (point.velocity.y*point.velocity.y);
+        return (mass*speedSq)/2;
     }
 }

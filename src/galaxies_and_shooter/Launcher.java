@@ -23,7 +23,6 @@ public class Launcher extends Application {
     private static final int CANVAS_HEIGHT = 1000;
     long lastNanoTime;
     ArrayList<KeyEvent> keyPressed = new ArrayList<KeyEvent>();
-    //Simulation<NBodySimulation.SystemState> sim = new NBodySimulation();
     Simulation<ShooterState> sim = new ShooterSim();
     ShooterState state;
 
@@ -51,7 +50,7 @@ public class Launcher extends Application {
                 long actualDT = currentNanoTime - lastNanoTime;
                 lastNanoTime = currentNanoTime;
 
-                state = sim.stepForward(state, actualDT/1000000000.0, keyPressed);
+                state = sim.stepForward(state, actualDT/1000000000.0, keyPressed, CANVAS_WIDTH, CANVAS_HEIGHT);
                 keyPressed = new ArrayList<KeyEvent>();
 
                 // draw

@@ -1,6 +1,7 @@
 package galaxies_and_shooter.shooter;
 
 import galaxies_and_shooter.Simulation;
+import galaxies_and_shooter.util.MovingPoint;
 import galaxies_and_shooter.util.Vector2d;
 import javafx.event.EventType;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,11 +14,11 @@ import java.util.ArrayList;
 public class ShooterSim implements Simulation<ShooterState>{
 
     public ShooterState init(int width, int height) {
-        return new ShooterState(new Vector2d(width/2, height/2), 2, false, false, false, false);
+        return new ShooterState(new Vector2d(width/2, height/2), 2, false, false, false, false, new ArrayList<MovingPoint>());
     }
 
 
-    public ShooterState stepForward(ShooterState s, double dt, ArrayList<KeyEvent> keyPresses) {
+    public ShooterState stepForward(ShooterState s, double dt, ArrayList<KeyEvent> keyPresses, int width, int height) {
         Vector2d nextLoc = s.getLocation();
         for (KeyEvent k : keyPresses){
             s.wPressed = isPressed(KeyCode.W, k, s.wPressed);
@@ -29,7 +30,36 @@ public class ShooterSim implements Simulation<ShooterState>{
         if (s.aPressed) nextLoc = new Vector2d(nextLoc.x - s.speed, nextLoc.y );
         if (s.sPressed) nextLoc = new Vector2d(nextLoc.x, nextLoc.y + s.speed);
         if (s.dPressed) nextLoc = new Vector2d(nextLoc.x + s.speed, nextLoc.y);
-        return new ShooterState(nextLoc, s.speed, s.wPressed, s.aPressed, s.sPressed, s.dPressed);
+
+        ArrayList<MovingPoint> nextBullets = new ArrayList();
+        for (MovingPoint bullet : s.bullets){
+            nextBullets.add(bullet.step(dt));
+        }
+        if (Math.random() < 0.04){
+            Vector2d nextLocation;
+            Vector2d nextVelocity;
+            double rand = Math.random();
+            if (rand < 0.25){
+                nextLocation = new Vector2d(0, (int) (Math.random()*height));
+                if (nextLocation.y > height / 2) nextVelocity = new Vector2d((Math.random()*3)+5, (Math.random()*3)+5);
+                else nextVelocity = new Vector2d((Math.random()*3)+5, (Math.random()*-3)-5);
+            } else if (rand < 0.5){
+                nextLocation = new Vector2d(width, (int) (Math.random()*height));
+                if (nextLocation.y > height / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*3)+5);
+                else nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*-3)-5);
+            } else if (rand < 0.75){
+                nextLocation = new Vector2d((int) (Math.random()*width), 0);
+                if (nextLocation.x > width / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*3)+5);
+                else nextVelocity = new Vector2d((Math.random()*+3)+5, (Math.random()*+3)+5);
+            }
+            else {
+                nextLocation = new Vector2d((int) (Math.random()*width), height);
+                if (nextLocation.x > width / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*-3)-5);
+                else nextVelocity = new Vector2d((Math.random()*+3)+5, (Math.random()*-3)-5);
+            }
+            nextBullets.add(new MovingPoint(nextLocation, nextVelocity));
+        }
+        return new ShooterState(nextLoc, s.speed, s.wPressed, s.aPressed, s.sPressed, s.dPressed, nextBullets);
     }
 
     private boolean isPressed(KeyCode code, KeyEvent event, boolean isCurrentlyPressed){
@@ -46,5 +76,9 @@ public class ShooterSim implements Simulation<ShooterState>{
         gc.fillRect(0, 0, width, height);
         gc.setFill(Color.BLACK);
         gc.fillOval(s.getLocation().x, s.getLocation().y, 10, 10);
+        gc.setFill(Color.RED);
+        for (MovingPoint bullet : s.bullets){
+            gc.fillOval(bullet.location.x, bullet.location.x, 3, 3);
+        }
     }
 }

@@ -25,7 +25,7 @@ public class SolarSimulation implements Simulation<SolarSimulation.SystemState> 
     }
 
     @Override
-    public SystemState stepForward(SystemState state, double deltaT, ArrayList<KeyEvent> events) {
+    public SystemState stepForward(SystemState state, double deltaT, ArrayList<KeyEvent> events, int width, int height) {
         // System.out.println("Taking step of size " + deltaT + ", and current time is " + state.timeElapsed);
 
         ArrayList<MovingPoint> nextAsteroids = new ArrayList<MovingPoint>();
