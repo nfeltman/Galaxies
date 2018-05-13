@@ -40,24 +40,23 @@ public class ShooterSim implements Simulation<ShooterState>{
             Vector2d nextVelocity;
             double rand = Math.random();
             if (rand < 0.25){
-                nextLocation = new Vector2d(0, (int) (Math.random()*height));
-                if (nextLocation.y > height / 2) nextVelocity = new Vector2d((Math.random()*3)+5, (Math.random()*3)+5);
+                nextLocation = new Vector2d(0, (int) (Math.random()*height)); // left
+                if (nextLocation.y < height / 2) nextVelocity = new Vector2d((Math.random()*3)+5, (Math.random()*3)+5);
                 else nextVelocity = new Vector2d((Math.random()*3)+5, (Math.random()*-3)-5);
             } else if (rand < 0.5){
-                nextLocation = new Vector2d(width, (int) (Math.random()*height));
-                if (nextLocation.y > height / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*3)+5);
+                nextLocation = new Vector2d(width, (int) (Math.random()*height)); // right
+                if (nextLocation.y < height / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*3)+5);
                 else nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*-3)-5);
             } else if (rand < 0.75){
-                nextLocation = new Vector2d((int) (Math.random()*width), 0);
+                nextLocation = new Vector2d((int) (Math.random()*width), 0); // top
                 if (nextLocation.x > width / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*3)+5);
                 else nextVelocity = new Vector2d((Math.random()*+3)+5, (Math.random()*+3)+5);
             }
             else {
-                nextLocation = new Vector2d((int) (Math.random()*width), height);
+                nextLocation = new Vector2d((int) (Math.random()*width), height); // bottom
                 if (nextLocation.x > width / 2) nextVelocity = new Vector2d((Math.random()*-3)-5, (Math.random()*-3)-5);
                 else nextVelocity = new Vector2d((Math.random()*+3)+5, (Math.random()*-3)-5);
             }
-            nextBullets.add(new MovingPoint(nextLocation, nextVelocity));
         }
         return new ShooterState(nextLoc, s.speed, s.wPressed, s.aPressed, s.sPressed, s.dPressed, nextBullets);
     }
@@ -78,7 +77,7 @@ public class ShooterSim implements Simulation<ShooterState>{
         gc.fillOval(s.getLocation().x, s.getLocation().y, 10, 10);
         gc.setFill(Color.RED);
         for (MovingPoint bullet : s.bullets){
-            gc.fillOval(bullet.location.x, bullet.location.x, 3, 3);
+            gc.fillOval(bullet.location.x, bullet.location.y, 3, 3);
         }
     }
 }
